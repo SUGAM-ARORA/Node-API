@@ -5,6 +5,10 @@ app.get('/'),(req,res)=>{
     res.send('Hello Node API')
 }
 
+app.get('/blog'),(req,res)=>{
+    res.send('Hello BLog API')
+}
+
 app.listen(3000,()=>{
     console.log('Node API is running on port 3000')
 })

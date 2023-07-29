@@ -14,4 +14,9 @@ app.listen(3000,()=>{
     console.log('Node API is running on port 3000')
 })
 
-mongoose.connect('mongodb://localhost:27017/blogdb',{useNewUrlParser:true,useUnifiedTopology:true})
+mongoose.connect('mongodb+srv://dbsugam:Db@1234@cluster0.tknup7l.mongodb.net/Node-API?retryWrites=true&w=majority')
+.then(()=>{
+    console.log('Database Connected')
+}).catch((error)=>{
+    console.log('Error connecting to database')
+})

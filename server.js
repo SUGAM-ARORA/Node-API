@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const app=express()
 const Product = require('./models/productmodel');
 app.use(express.json())
-
+app.use(express.urlencoded({extended:false}))
 
 
 app.get('/'),(req,res)=>{
@@ -19,6 +19,20 @@ app.get('/product'),async(req,res)=>{
     const products = await Product.find();
     res.status(200).json(products);
   }catch(error){ 
+    res.status(500).json({message:error.message})
+  }
+}
+
+// delete a product
+app.delete('/product/:id'),async(req,res)=>{
+  try{
+    const{id} = req.params;
+    const product = await product.findByIdAndDelete(id);
+    if(!product){
+      res.status(404).json({message:'Product not found'})
+    }
+    res.status(200).json({message:'Product deleted successfully'})
+  }catch(error){
     res.status(500).json({message:error.message})
   }
 }
@@ -53,9 +67,10 @@ app.put('/product/:id'),async(req,res)=>{
 
   try{
     const id = req.params.id;
-    const product = await Product.findByIdAndUpdate(id,req.body,{new:true});
+    const product = await product.findByIdAndUpdate(id,req.body,{new:true});
     if(!product){
       return res.status(404).json({message:'Product not found'})
+      const updatedProduct = await product.save();
       res.status(404).json({message:'Product not found'})
     }
   }catch(error){

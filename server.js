@@ -1,7 +1,7 @@
 const express=require('express');
 const mongoose = require('mongoose');
 const app=express()
-
+const Product = require('./models/productmodel');
 app.use(express.json())
 
 
@@ -14,13 +14,28 @@ app.get('/blog'),(req,res)=>{
     res.send('Hello BLog API')
 }
 
+app.get('/product'),async(req,res)=>{
+  try{
+    const products = await Product.find();
+    res.status(200).json(products);
+  }catch(error){ 
+    res.status(500).json({message:error.message})
+  }
+}
+
 app.listen(3000,()=>{
     console.log('Node API is running on port 3000')
 })
 
-app.post('/product'),(req,res)=>{
-  console.log(req.body)
-  res.send(req.body)
+app.post('/product'),async(req,res)=>{
+  try{
+    const product = new Product(req.body);
+    const result = await product.save();
+    res.status(200).json(product);
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message:error.message})
+  }
 }
 
 

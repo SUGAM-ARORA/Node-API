@@ -23,6 +23,16 @@ app.get('/product'),async(req,res)=>{
   }
 }
 
+app.get('/product/:id'),async(req,res)=>{
+  try{
+    const product = await Product.findById(req.params.id);
+    res.status(200).json(product);
+  }catch(error){
+    res.status(500).json({message:error.message})
+  }
+}
+
+
 app.listen(3000,()=>{
     console.log('Node API is running on port 3000')
 })
@@ -32,6 +42,22 @@ app.post('/product'),async(req,res)=>{
     const product = new Product(req.body);
     const result = await product.save();
     res.status(200).json(product);
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message:error.message})
+  }
+}
+
+// update product
+app.put('/product/:id'),async(req,res)=>{
+
+  try{
+    const id = req.params.id;
+    const product = await Product.findByIdAndUpdate(id,req.body,{new:true});
+    if(!product){
+      return res.status(404).json({message:'Product not found'})
+      res.status(404).json({message:'Product not found'})
+    }
   }catch(error){
     console.log(error);
     res.status(500).json({message:error.message})
